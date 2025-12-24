@@ -275,6 +275,15 @@ function App() {
             )}
           </AnimatePresence>
 
+          {/* Explicit Music Control Button */}
+          <button
+            className="music-toggle"
+            onClick={() => setMusicPlaying(!musicPlaying)}
+            title={musicPlaying ? "Pause Music" : "Play Music"}
+          >
+            {musicPlaying ? "🎵" : "🔇"}
+          </button>
+
         </motion.div>
       )}
     </div>

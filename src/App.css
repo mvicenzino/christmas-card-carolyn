@@ -268,6 +268,29 @@
   color: #333;
 }
 
+.music-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  z-index: 2000;
+  transition: transform 0.2s;
+}
+
+.music-toggle:active {
+  transform: scale(0.95);
+}
+
 @media (max-width: 768px) {
   .snowflake-collage {
     height: auto;
