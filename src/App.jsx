@@ -39,11 +39,13 @@ const Snow = memo(() => {
   )
 })
 
-const Envelope = ({ onOpen }) => {
+const Envelope = ({ onOpen, onStartMusic }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClick = () => {
     if (!isOpen) {
+      // Trigger music immediately on user interaction
+      onStartMusic && onStartMusic();
       setIsOpen(true);
       // Wait for flap animation, then trigger main content
       setTimeout(() => {
@@ -87,6 +89,7 @@ const Envelope = ({ onOpen }) => {
 
 function App() {
   const [start, setStart] = useState(false);
+  const [musicPlaying, setMusicPlaying] = useState(false);
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
   const outerPhotos = [photo1, photo2, photo3, photo4, photo5];
 
@@ -128,9 +131,10 @@ function App() {
       <div style={{ width: 0, height: 0, overflow: 'hidden' }}>
         <ReactPlayer
           url='https://www.youtube.com/watch?v=k_L5r_h22lQ'
-          playing={start}
+          playing={musicPlaying}
           volume={1}
           loop={true}
+          playsinline={true}
           config={{
             youtube: {
               playerVars: { showinfo: 0, controls: 0, playsinline: 1 }
@@ -140,7 +144,7 @@ function App() {
       </div>
 
       <AnimatePresence>
-        {!start && <Envelope onOpen={() => setStart(true)} />}
+        {!start && <Envelope onOpen={() => setStart(true)} onStartMusic={() => setMusicPlaying(true)} />}
       </AnimatePresence>
 
       {start && (
