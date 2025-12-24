@@ -86,11 +86,36 @@ const Envelope = ({ onOpen, onStartMusic }) => {
     </motion.div>
   )
 }
+const ImageModal = ({ image, onClose }) => {
+  if (!image) return null;
+
+  return (
+    <motion.div
+      className="image-modal-overlay"
+      onClick={onClose}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <button className="close-button" onClick={onClose}>&times;</button>
+      <motion.div
+        className="image-modal-content"
+        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking content
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.8, opacity: 0 }}
+      >
+        <img src={image} alt="Enlarged Memory" />
+      </motion.div>
+    </motion.div>
+  );
+};
 
 function App() {
   const [start, setStart] = useState(false);
   const [musicPlaying, setMusicPlaying] = useState(false);
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
+  const [selectedImage, setSelectedImage] = useState(null);
   const outerPhotos = [photo1, photo2, photo3, photo4, photo5];
 
   useEffect(() => {
@@ -181,6 +206,7 @@ function App() {
                 <motion.div
                   key={index}
                   className="photo-card outer-photo"
+                  onClick={() => setSelectedImage(photo)}
                   style={{
                     zIndex: 10
                   }}
@@ -206,6 +232,7 @@ function App() {
             {/* On Mobile: Appears at bottom of stack. Desktop: Center via CSS/JS coords */}
             <motion.div
               className="photo-card center-photo"
+              onClick={() => setSelectedImage(ultrasound)}
               initial={{ scale: 0, opacity: 0, rotate: -360 }}
               animate={{ scale: 1, opacity: 1, rotate: 0 }}
               transition={{
@@ -238,6 +265,15 @@ function App() {
               Mike
             </div>
           </motion.div>
+
+          <AnimatePresence>
+            {selectedImage && (
+              <ImageModal
+                image={selectedImage}
+                onClose={() => setSelectedImage(null)}
+              />
+            )}
+          </AnimatePresence>
 
         </motion.div>
       )}
