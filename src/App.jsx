@@ -125,12 +125,17 @@ function App() {
       <Snow />
 
       {/* Hidden Music Player */}
-      <div style={{ display: 'none' }}>
+      <div style={{ width: 0, height: 0, overflow: 'hidden' }}>
         <ReactPlayer
           url='https://www.youtube.com/watch?v=k_L5r_h22lQ'
           playing={start}
           volume={1}
           loop={true}
+          config={{
+            youtube: {
+              playerVars: { showinfo: 0, controls: 0, playsinline: 1 }
+            }
+          }}
         />
       </div>
 
