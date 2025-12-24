@@ -1,0 +1,29 @@
+:root {
+  --christmas-red: #c41e3a;
+  --christmas-green: #165b33;
+  --christmas-gold: #ffd700;
+  --snow-white: #f8f9fa;
+  --dark-bg: #0a0f0d;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+  background-color: var(--dark-bg);
+  background-image: radial-gradient(circle at 50% 50%, #2a3d35 0%, #0a0f0d 100%);
+  color: var(--snow-white);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Great Vibes', cursive;
+  font-weight: 400;
+}

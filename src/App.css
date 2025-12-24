@@ -1,0 +1,413 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+  overflow-x: hidden;
+}
+
+/* ... existing styles ... */
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.decorative-border {
+  position: relative;
+  /* border: 2px solid var(--christmas-gold); Removed native border */
+  border-radius: 20px;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.05);
+  /* Keep partially transparent bg */
+  backdrop-filter: blur(5px);
+  max-width: 1000px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  /* Pulsating Shadow */
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+  animation: pulsate-glow 3s ease-in-out infinite alternate;
+}
+
+/* Pseudo-element for the rotating gold border */
+.decorative-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  padding: 3px;
+  /* Border thickness */
+
+  /* The magic gradient border */
+  background: conic-gradient(from var(--angle),
+      transparent 0%,
+      var(--christmas-gold) 15%,
+      transparent 30%,
+      transparent 50%,
+      var(--christmas-gold) 65%,
+      transparent 80%);
+
+  /* Masking to create the border frame shape */
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  /* Animation of the gradient angle */
+  animation: rotate-angle 4s linear infinite;
+  pointer-events: none;
+  /* Allow interaction with content */
+  z-index: -1;
+  /* Behind content but in front of background? actually this is inside the border so it sits on top if z-index is high, or needs specific stacking. 
+                  Since parent has background, we want this ON TOP of parent background but BEHIND text? 
+                  With inset:0, it overlays the padding area too if not masked carefully.
+                  The mask cuts out the content-box. Padding is 40px. 
+                  So 'content-box' mask means the inner part is masked out (transparent).
+                  Wait, 'content-box' with 40px padding means the hole is small. The border will appear 40px thick?
+                  NO. We want 3px thick border at the EDGE.
+                  So padding of pseudo-element should be 3px.
+                  Parent padding is 40px.
+                  If pseudo has inset:0, it matches parent size.
+                  If pseudo has padding:3px, content-box is (width - 6px).
+                  Mask excludes content-box => visible area is the 3px ring. Perfect. 
+               */
+}
+
+/* Fallback border for browsers without @property support (optional but good practice) */
+@supports not (background: paint(something)) {
+  .decorative-border {
+    border: 2px solid rgba(255, 215, 0, 0.5);
+  }
+}
+
+@keyframes rotate-angle {
+  to {
+    --angle: 360deg;
+  }
+}
+
+@keyframes pulsate-glow {
+  from {
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+  }
+
+  to {
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.4), 0 0 10px rgba(196, 30, 58, 0.2);
+  }
+}
+
+.title {
+  font-size: 5rem;
+  color: var(--christmas-red);
+  text-shadow: 0 0 10px rgba(196, 30, 58, 0.5), 2px 2px 0 var(--christmas-gold);
+  margin-bottom: 1rem;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px rgba(196, 30, 58, 0.5), 2px 2px 0 var(--christmas-gold);
+  }
+
+  to {
+    text-shadow: 0 0 20px rgba(196, 30, 58, 0.8), 2px 2px 5px var(--christmas-gold);
+  }
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin-bottom: 3rem;
+  color: var(--snow-white);
+  line-height: 1.6;
+}
+
+.snowflake-collage {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  height: 600px;
+  margin: 2rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Optimized Snow */
+.snow-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.snowflake {
+  position: absolute;
+  top: -10px;
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-radius: 50%;
+  filter: blur(1px);
+  animation: snowfall linear infinite;
+  will-change: transform;
+  /* Hint to browser to promote to compositor layer */
+}
+
+@keyframes snowfall {
+  to {
+    transform: translateY(110vh);
+  }
+}
+
+/* Hardware Acceleration Hints for smooth transitions */
+.photo-card {
+  will-change: transform, opacity;
+  /* ... existing styles ... */
+  position: absolute;
+  background: var(--snow-white);
+  padding: 10px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.4);
+  transform-origin: center;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.photo-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-card:hover {
+  z-index: 50 !important;
+  transform: scale(1.1) rotate(0deg) !important;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+}
+
+.center-photo {
+  width: 300px;
+  height: 300px;
+  z-index: 10;
+  border: 1px solid var(--christmas-gold);
+}
+
+.outer-photo {
+  width: 180px;
+  height: 180px;
+  z-index: 5;
+}
+
+@media (max-width: 768px) {
+  .snowflake-collage {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .photo-card {
+    position: relative;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    width: 90%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  .center-photo {
+    width: 100%;
+    order: -1;
+  }
+
+  .outer-photo {
+    width: 90%;
+  }
+}
+
+.message-box {
+  background: #f0f7f4;
+  color: #2c3e35;
+  padding: 3rem;
+  border-radius: 8px;
+  margin-top: 3rem;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  max-width: 800px;
+  width: 100%;
+}
+
+.message-text {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  font-family: 'Lato', sans-serif;
+}
+
+.signature {
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.5rem;
+  margin-top: 2rem;
+  color: var(--christmas-red);
+}
+
+.envelope,
+.flap-top {
+  will-change: transform, opacity;
+}
+
+.decorative-border {
+  /* ... existing styles ... */
+  will-change: box-shadow;
+  /* Hint for the pulsating glow */
+  position: relative;
+  /* border: 2px solid var(--christmas-gold); Removed native border */
+  border-radius: 20px;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.05);
+  /* Keep partially transparent bg */
+  backdrop-filter: blur(5px);
+  max-width: 1000px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  /* Pulsating Shadow */
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+  animation: pulsate-glow 3s ease-in-out infinite alternate;
+}
+
+/* Envelope Styles */
+.envelope-wrapper {
+  perspective: 1000px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  z-index: 200;
+  background: rgba(10, 15, 13, 0.95);
+}
+
+.envelope {
+  position: relative;
+  width: 600px;
+  height: 400px;
+  background-color: #c41e3a;
+  /* Christmas Red */
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* Let clicks pass through if needed, but wrapper handles click */
+}
+
+/* Triangle shapes using borders */
+.flap-left {
+  border-left: 300px solid #a01830;
+  border-top: 200px solid transparent;
+  border-bottom: 200px solid transparent;
+  height: 0;
+  width: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 3;
+}
+
+.flap-right {
+  border-right: 300px solid #a01830;
+  border-top: 200px solid transparent;
+  border-bottom: 200px solid transparent;
+  height: 0;
+  width: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 3;
+}
+
+.flap-bottom {
+  border-bottom: 200px solid #b51b35;
+  border-left: 300px solid transparent;
+  border-right: 300px solid transparent;
+  height: 0;
+  width: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 3;
+}
+
+.flap-top {
+  border-top: 210px solid #c41e3a;
+  /* Slightly lighter/main red */
+  border-left: 300px solid transparent;
+  border-right: 300px solid transparent;
+  height: 0;
+  width: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top;
+  z-index: 4;
+  transition: transform 0.6s ease-in-out;
+}
+
+.envelope-message {
+  color: var(--christmas-gold);
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.5rem;
+  /* Increased font size */
+  z-index: 5;
+  text-align: center;
+  margin-top: 40px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.wax-seal {
+  width: 40px;
+  height: 40px;
+  background: radial-gradient(circle at 30% 30%, #ffd700, #b8860b);
+  border-radius: 50%;
+  position: absolute;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #5c4004;
+  font-weight: bold;
+}
