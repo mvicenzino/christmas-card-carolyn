@@ -259,7 +259,7 @@ function App() {
             transition={{ delay: 7 }}
           >
             <p className="message-text">
-              Dear Carolyn, <br /><br />
+              To my beautiful wife, <br /><br />
               Looking back at these moments we've shared and what's to come, I'm reminded of how lucky I am!
               I repeat this each and every year...you are my everything.<br /><br />
               I love you more than words can say.
