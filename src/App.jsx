@@ -215,6 +215,8 @@ function App() {
                 zIndex: 20
               }}
             >
+              {/* Wire Hanging Element */}
+              <div className="connecting-wire"></div>
               <img src={ultrasound} alt="Our Miracle" />
             </motion.div>
 
@@ -242,6 +244,8 @@ function App() {
                     stiffness: 50
                   }}
                 >
+                  {/* Wire Hanging Element */}
+                  <div className="connecting-wire"></div>
                   <img src={photo} alt={`Memory ${index + 1}`} />
                 </motion.div>
               )

@@ -198,10 +198,15 @@
 /* Subtle hover effect only, no layout shifts */
 .photo-card {
   cursor: zoom-in;
+  /* Add sway animation - random durations handled in inline styles if possible, or just general here */
+  animation: sway 3s ease-in-out infinite alternate;
+  transform-origin: top center;
 }
 
 .photo-card:hover {
   filter: brightness(1.1);
+  animation-play-state: paused;
+  /* Stop swaying on hover to make it easier to click */
 }
 
 .center-photo {
@@ -459,6 +464,43 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/* Connecting String/Wire */
+.connecting-wire {
+  position: absolute;
+  top: -30px;
+  /* Start above the card */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 30px;
+  background: var(--christmas-gold);
+  z-index: 1;
+}
+
+/* Add a glowing light/pin at the top of the string */
+.connecting-wire::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 5px white, 0 0 10px var(--christmas-gold);
+}
+
+@keyframes sway {
+  0% {
+    transform: rotate(-2deg);
+  }
+
+  100% {
+    transform: rotate(2deg);
+  }
 }
 
 .envelope-flap {
