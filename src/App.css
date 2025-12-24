@@ -198,15 +198,17 @@
 /* Subtle hover effect only, no layout shifts */
 .photo-card {
   cursor: zoom-in;
-  /* Add sway animation - random durations handled in inline styles if possible, or just general here */
-  animation: sway 3s ease-in-out infinite alternate;
+  /* Removed global sway to revert desktop behavior */
   transform-origin: top center;
 }
 
 .photo-card:hover {
   filter: brightness(1.1);
-  animation-play-state: paused;
-  /* Stop swaying on hover to make it easier to click */
+}
+
+/* Hide wire by default (Desktop) */
+.connecting-wire {
+  display: none;
 }
 
 .center-photo {
@@ -362,13 +364,21 @@
     position: relative !important;
     top: auto !important;
     left: auto !important;
-    transform: none !important;
-    /* Let Framer Motion handle transforms, but reset base CSS transform if any */
+    /* transform: none !important;  <-- REMOVED to allow sway animation */
+
     width: 80%;
     /* Slightly smaller width for the stack */
     height: auto;
     aspect-ratio: 1;
     margin: 0 auto;
+
+    /* Enable swaying on mobile */
+    animation: sway 3s ease-in-out infinite alternate;
+    transform-origin: top center;
+  }
+
+  .connecting-wire {
+    display: block;
   }
 
   .center-photo {
