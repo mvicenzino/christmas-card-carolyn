@@ -369,9 +369,7 @@
   .center-photo {
     width: 90%;
     /* Prominent size */
-    order: -1;
-    /* Move to top of stack */
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     border: 2px solid var(--christmas-gold);
     box-shadow: 0 0 30px var(--christmas-gold), 0 0 60px rgba(255, 215, 0, 0.4) !important;
     /* Strong outer glow */

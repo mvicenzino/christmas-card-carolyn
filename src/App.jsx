@@ -199,7 +199,26 @@ function App() {
           </header>
 
           <section className="snowflake-collage">
-            {/* Outer Photos First in Source Order for "Cascade" feel, Center Last */}
+            {/* Center Photo (Ultrasound) - Focal Point */}
+            {/* Rendered FIRST in DOM so it sits at top naturally in column layout */}
+            <motion.div
+              className="photo-card center-photo"
+              onClick={() => setSelectedImage(ultrasound)}
+              initial={{ scale: 0, opacity: 0, rotate: -360 }}
+              animate={{ scale: 1, opacity: 1, rotate: 0 }}
+              transition={{
+                delay: isMobile ? 0.5 : 5, // Mobile: First (0.5s). Desktop: Last (5s) dramatic entrance
+                duration: 2,
+                ease: "easeOut"
+              }}
+              style={{
+                zIndex: 20
+              }}
+            >
+              <img src={ultrasound} alt="Our Miracle" />
+            </motion.div>
+
+            {/* Outer Photos "Cascade" after/around */}
             {outerPhotos.map((photo, index) => {
               const pos = getPosition(index, outerPhotos.length);
               return (
@@ -218,7 +237,7 @@ function App() {
                     rotate: pos.rotate
                   }}
                   transition={{
-                    delay: isMobile ? 2 + (index * 0.5) : 1.5 + (index * 0.5), // On mobile, cascade AFTER center photo establishes
+                    delay: isMobile ? 1.5 + (index * 0.5) : 1.5 + (index * 0.5), // Mobile starts after ultrasound (0.5+1 = 1.5s start)
                     type: "spring",
                     stiffness: 50
                   }}
@@ -227,25 +246,6 @@ function App() {
                 </motion.div>
               )
             })}
-
-            {/* Center Photo (Ultrasound) - Last DRAMATIC Entrance */}
-            {/* On Mobile: Appears at bottom of stack. Desktop: Center via CSS/JS coords */}
-            <motion.div
-              className="photo-card center-photo"
-              onClick={() => setSelectedImage(ultrasound)}
-              initial={{ scale: 0, opacity: 0, rotate: -360 }}
-              animate={{ scale: 1, opacity: 1, rotate: 0 }}
-              transition={{
-                delay: isMobile ? 0.5 : 5, // On mobile, enter FIRST as focal point. Desktop: keep dramatic pause
-                duration: 2,
-                ease: "easeOut"
-              }}
-              style={{
-                zIndex: 20
-              }}
-            >
-              <img src={ultrasound} alt="Our Miracle" />
-            </motion.div>
           </section>
 
           <motion.div
