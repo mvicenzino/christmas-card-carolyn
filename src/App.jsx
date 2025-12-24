@@ -1,4 +1,4 @@
-import { useState, memo } from 'react'
+import { useState, useEffect, memo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import ReactPlayer from 'react-player'
 import './App.css'
