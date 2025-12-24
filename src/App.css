@@ -217,26 +217,38 @@
     height: auto;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 30px;
+    /* Increased gap for better spacing in cascade */
+    align-items: center;
+    padding-bottom: 20px;
   }
 
   .photo-card {
-    position: relative;
+    position: relative !important;
     top: auto !important;
     left: auto !important;
     transform: none !important;
-    width: 90%;
+    /* Let Framer Motion handle transforms, but reset base CSS transform if any */
+    /* Note: Framer Motion uses inline styles for transform, so this CSS transform:none might be redundant or overridden, but good safety */
+    width: 80%;
+    /* Slightly smaller width for the stack */
     height: auto;
     aspect-ratio: 1;
+    margin: 0 auto;
   }
 
   .center-photo {
-    width: 100%;
-    order: -1;
+    width: 90%;
+    /* Prominent size */
+    /* Remove order: -1 so it stays last (default) */
+    border: 2px solid var(--christmas-gold);
+    box-shadow: 0 0 30px var(--christmas-gold), 0 0 60px rgba(255, 215, 0, 0.4) !important;
+    /* Strong outer glow */
+    z-index: 30 !important;
   }
 
   .outer-photo {
-    width: 90%;
+    width: 70%;
   }
 }
 

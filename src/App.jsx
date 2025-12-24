@@ -87,10 +87,28 @@ const Envelope = ({ onOpen }) => {
 
 function App() {
   const [start, setStart] = useState(false);
+  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
   const outerPhotos = [photo1, photo2, photo3, photo4, photo5];
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Calculate positions for a radial layout
   const getPosition = (index, total) => {
+    // If mobile, disable radial offsets so CSS Flexbox handles the stack/cascade
+    if (isMobile) {
+      return {
+        x: 0,
+        y: 0,
+        rotate: (Math.random() * 6 - 3) // Subtle rotation in the stack
+      };
+    }
+
     const radius = 220;
     const angleOffset = -90 * (Math.PI / 180);
     const angle = angleOffset + (index * (2 * Math.PI) / total);
@@ -147,20 +165,7 @@ function App() {
           </header>
 
           <section className="snowflake-collage">
-            {/* Center Photo (Ultrasound) - Last DRAMATIC Entrance */}
-            <motion.div
-              className="photo-card center-photo"
-              initial={{ scale: 0, opacity: 0, rotate: -360 }}
-              animate={{ scale: 1, opacity: 1, rotate: 0 }}
-              transition={{ delay: 5, duration: 3, ease: "easeOut" }}
-              style={{
-                zIndex: 20
-              }}
-            >
-              <img src={ultrasound} alt="Our Miracle" />
-            </motion.div>
-
-            {/* Outer Photos */}
+            {/* Outer Photos First in Source Order for "Cascade" feel, Center Last */}
             {outerPhotos.map((photo, index) => {
               const pos = getPosition(index, outerPhotos.length);
               return (
@@ -178,7 +183,7 @@ function App() {
                     rotate: pos.rotate
                   }}
                   transition={{
-                    delay: 1.5 + (index * 0.3),
+                    delay: 1.5 + (index * 0.5), // Slower, distinct "one by one" cascade
                     type: "spring",
                     stiffness: 50
                   }}
@@ -187,6 +192,24 @@ function App() {
                 </motion.div>
               )
             })}
+
+            {/* Center Photo (Ultrasound) - Last DRAMATIC Entrance */}
+            {/* On Mobile: Appears at bottom of stack. Desktop: Center via CSS/JS coords */}
+            <motion.div
+              className="photo-card center-photo"
+              initial={{ scale: 0, opacity: 0, rotate: -360 }}
+              animate={{ scale: 1, opacity: 1, rotate: 0 }}
+              transition={{
+                delay: isMobile ? 1.5 + (outerPhotos.length * 0.5) + 0.5 : 5, // On mobile, show right after the last photo. Desktop: keep dramatic pause
+                duration: 2,
+                ease: "easeOut"
+              }}
+              style={{
+                zIndex: 20
+              }}
+            >
+              <img src={ultrasound} alt="Our Miracle" />
+            </motion.div>
           </section>
 
           <motion.div
