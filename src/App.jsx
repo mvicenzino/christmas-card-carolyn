@@ -153,16 +153,16 @@ function App() {
       <Snow />
 
       {/* Hidden Music Player */}
-      <div style={{ width: 0, height: 0, overflow: 'hidden' }}>
+      <div style={{ width: '1px', height: '1px', opacity: 0.01, position: 'fixed', bottom: 0, left: 0, pointerEvents: 'none' }}>
         <ReactPlayer
-          url='https://www.youtube.com/watch?v=k_L5r_h22lQ'
+          url='https://www.youtube.com/watch?v=2Vv-BfVoq4g'
           playing={musicPlaying}
           volume={1}
           loop={true}
           playsinline={true}
           config={{
             youtube: {
-              playerVars: { showinfo: 0, controls: 0, playsinline: 1 }
+              playerVars: { showinfo: 0, controls: 0, playsinline: 1, autoplay: 0 }
             }
           }}
         />
