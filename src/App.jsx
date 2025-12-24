@@ -218,7 +218,7 @@ function App() {
                     rotate: pos.rotate
                   }}
                   transition={{
-                    delay: 1.5 + (index * 0.5), // Slower, distinct "one by one" cascade
+                    delay: isMobile ? 2 + (index * 0.5) : 1.5 + (index * 0.5), // On mobile, cascade AFTER center photo establishes
                     type: "spring",
                     stiffness: 50
                   }}
@@ -236,7 +236,7 @@ function App() {
               initial={{ scale: 0, opacity: 0, rotate: -360 }}
               animate={{ scale: 1, opacity: 1, rotate: 0 }}
               transition={{
-                delay: isMobile ? 1.5 + (outerPhotos.length * 0.5) + 0.5 : 5, // On mobile, show right after the last photo. Desktop: keep dramatic pause
+                delay: isMobile ? 0.5 : 5, // On mobile, enter FIRST as focal point. Desktop: keep dramatic pause
                 duration: 2,
                 ease: "easeOut"
               }}
